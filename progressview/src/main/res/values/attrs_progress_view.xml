@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="progressViewStyle" />
+
+    <declare-styleable name="SectionalProgressView">
+        <attr name="segmentCount" format="integer" />
+        <attr name="progressBackgroundTint" format="color" />
+        <attr name="progressTint" format="color" />
+        <attr name="progressCompletedTint" format="color" />
+        <attr name="android:layout_margin" />
+        <attr name="android:layout_marginStart" />
+    </declare-styleable>
+</resources>

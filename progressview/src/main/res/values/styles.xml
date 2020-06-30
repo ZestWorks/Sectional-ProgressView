@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="ProgressViewStyle">
+        <item name="progressBackgroundTint">?attr/colorControlNormal</item>
+        <item name="progressTint">#D32F2F</item>
+        <item name="progressCompletedTint">#219421</item>
+    </style>
+</resources>
