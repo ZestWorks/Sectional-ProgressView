@@ -1,3 +1,0 @@
-include ':progressview'
-include ':app'
-rootProject.name = "Sectional ProgessView"
