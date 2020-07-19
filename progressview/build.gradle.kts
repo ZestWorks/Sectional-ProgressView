@@ -4,7 +4,11 @@ plugins {
     kotlin("android.extensions")
     maven
     `maven-publish`
+    id("com.github.dcendents.android-maven")
 }
+
+group = "com.github.zestworks"
+
 android {
     compileSdkVersion(BuildVersions.compileSdkVersion)
     buildToolsVersion = BuildVersions.buildToolsVersion
