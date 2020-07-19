@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
                         progressPercentage = progress + 1
                     )
                 }
-                delay(50L)
+                delay(300L)
             }
         }
     }
