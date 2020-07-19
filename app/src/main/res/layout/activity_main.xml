@@ -6,6 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <TextView
+        style="@style/TextAppearance.AppCompat.Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="Sectional Progress View"
+        app:layout_constraintBottom_toTopOf="@+id/progressView"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <com.zestworks.progressview.SectionalProgressView
         android:id="@+id/progressView"
         android:layout_width="match_parent"
@@ -15,7 +24,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:progressBackgroundTint="?attr/colorControlNormal"
-        app:segmentCount="3" />
+        app:progressBackgroundTint="?attr/colorControlNormal" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
