@@ -6,31 +6,32 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
+import androidx.annotation.ColorInt
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
-import androidx.constraintlayout.widget.ConstraintSet.BOTTOM
-import androidx.constraintlayout.widget.ConstraintSet.CHAIN_SPREAD_INSIDE
-import androidx.constraintlayout.widget.ConstraintSet.END
-import androidx.constraintlayout.widget.ConstraintSet.MATCH_CONSTRAINT
-import androidx.constraintlayout.widget.ConstraintSet.PARENT_ID
-import androidx.constraintlayout.widget.ConstraintSet.START
-import androidx.constraintlayout.widget.ConstraintSet.TOP
+import androidx.constraintlayout.widget.ConstraintSet.*
 
-private const val TAG = "SectionalProgressView"
 
 class SectionalProgressView : ConstraintLayout {
 
-    var segmentCount: Int = 0
+    private var segmentCount: Int = 0
         set(value) {
             require(value != 0) { "Segment count can't be 0" }
             field = value
             resetProgressViews()
         }
 
-    var backgroundTint: Int = 0
-    var progressTint: Int = 0
-    var progressCompletedTint: Int = 0
+    @ColorInt
+    private var backgroundTint: Int = Color.parseColor("#000000")
+
+    @ColorInt
+    private var progressTint: Int = Color.parseColor("#d32f2f")
+
+    @ColorInt
+    private var progressCompletedTint: Int = Color.parseColor("#219421")
+
     private var horSpacing: Int = 0
 
     constructor(context: Context) : this(context, null)
@@ -46,38 +47,62 @@ class SectionalProgressView : ConstraintLayout {
             defStyleAttr,
             R.style.ProgressViewStyle
         )
-
         backgroundTint = typedArray.getColor(
             R.styleable.SectionalProgressView_progressBackgroundTint,
-            Color.parseColor("#000000")
+            backgroundTint
         )
         progressTint = typedArray.getColor(
             R.styleable.SectionalProgressView_progressTint,
-            Color.parseColor("#d32f2f")
+            progressTint
         )
         progressCompletedTint = typedArray.getColor(
             R.styleable.SectionalProgressView_progressCompletedTint,
-            Color.parseColor("#219421")
+            progressCompletedTint
         )
+
         val marginStart =
             typedArray.getDimension(
                 R.styleable.SectionalProgressView_android_layout_marginStart,
                 0f
             ).toInt()
+
         horSpacing = if (marginStart != 0) {
             marginStart
         } else {
             typedArray.getDimension(R.styleable.SectionalProgressView_android_layout_margin, 0f)
                 .toInt()
         }
-        segmentCount = typedArray.getInteger(R.styleable.SectionalProgressView_segmentCount, 0)
+        if (typedArray.hasValue(R.styleable.SectionalProgressView_segmentCount)) {
+            segmentCount = typedArray.getInteger(R.styleable.SectionalProgressView_segmentCount, 0)
+        } else {
+            Log.e("SectionalProgressView", "Section count should be set for this view to render, you can set this either in the XML using app:segmentCount=\"3\" or by calling the method setSegmentsCount")
+        }
         typedArray.recycle()
     }
 
-    fun setProgress(segment: Int, progress: Int) {
-        require(segment != 0) { "Segment is 1 based index" }
-        val progressIndicator = getChildAt(segment - 1) as ProgressIndicator
-        progressIndicator.setProgress(progress)
+    fun setProgress(segmentIndex: Int, progressPercentage: Int) {
+        require(segmentIndex != 0) { "Segment is 1 based index" }
+        val progressIndicator = getChildAt(segmentIndex - 1) as ProgressIndicator
+        progressIndicator.setProgress(progressPercentage)
+    }
+
+    fun setBackgroundTint(@ColorInt color: Int) {
+        this.backgroundTint = color
+        invalidate()
+    }
+
+    fun setProgressTint(@ColorInt color: Int) {
+        this.progressTint = color
+        invalidate()
+    }
+
+    fun setProgressCompletedTint(@ColorInt color: Int) {
+        this.progressCompletedTint = color
+        invalidate()
+    }
+
+    fun setSegmentsCount(count: Int) {
+        this.segmentCount = count
     }
 
     private fun resetProgressViews() {

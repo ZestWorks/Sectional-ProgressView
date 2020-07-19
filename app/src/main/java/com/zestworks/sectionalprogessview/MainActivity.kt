@@ -1,37 +1,34 @@
 package com.zestworks.sectionalprogessview
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.zestworks.progressview.SectionalProgressView
+import androidx.appcompat.app.AppCompatActivity
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity() {
-	private val xTimes: Int = 5
 
-	override fun onCreate(savedInstanceState: Bundle?) {
-		super.onCreate(savedInstanceState)
-		setContentView(R.layout.activity_main)
-		triggerTick()
-	}
+    private val sectionsCount = 4
 
-	private fun triggerTick() {
-		GlobalScope.launch(Dispatchers.IO) {
-			var progress: Int = 0
-			var count: Int = 1
-			do {
-				progress += xTimes
-				delay(1000L)
-				withContext(Dispatchers.Main) {
-					findViewById<SectionalProgressView>(R.id.progressView).setProgress(
-						count,
-						progress
-					)
-				}
-				if (progress == 100) {
-					progress = 0
-					count += 1
-				}
-			} while (count < 4)
-		}
-	}
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        progressView.setSegmentsCount(sectionsCount)
+        GlobalScope.launch {
+            triggerTicks(sectionsCount)
+        }
+    }
+
+    private suspend fun triggerTicks(segmentCount: Int) {
+        repeat(segmentCount) { section ->
+            repeat(100) { progress ->
+                withContext(Dispatchers.Main) {
+                    progressView.setProgress(
+                        segmentIndex = section + 1,
+                        progressPercentage = progress + 1
+                    )
+                }
+                delay(50L)
+            }
+        }
+    }
 }
